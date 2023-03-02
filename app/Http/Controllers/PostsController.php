@@ -42,7 +42,7 @@ class PostsController extends Controller
         return view(
             'posts.index',
             [
-                'posts'=>BlogPost::ramen()->withCount('comments')->get(),
+                'posts'=>BlogPost::ramen()->withCount('comments')->with('user')->get(),
                 'mostCommentPosts' => BlogPost::mostComment()->take(5)->get(),
                 'mostActiveUsers' => User::mostActiveUser()->take(3)->get(),
                 'mostActiveLastMonth' => User::mostBlogPostsLastMonth()->take(3)->get()

@@ -33,24 +33,27 @@
                 <p>0 comments</p>
                 @endif
                 
-                @can('update', $post)
-                    <a href="{{ route('posts.edit', ['post' => $post->id]) }}" class="btn btn-primary">Edit</a>    
-                @endcan
-                
-                @can('delete', $post)
-                    <form method="POST" class="d-inline" action="{{ route('posts.destroy', ['post' => $post->id]) }}">
-                        @csrf
-                        @method('DELETE')
-                        <input type="submit" value="Delete!" class="btn btn-primary"/>
-                    </form>
-                @endcan
+            @auth
+                    @can('update', $post)
+                        <a href="{{ route('posts.edit', ['post' => $post->id]) }}" class="btn btn-primary">Edit</a>    
+                    @endcan
+                    
+                    @can('delete', $post)
+                        <form method="POST" class="d-inline" action="{{ route('posts.destroy', ['post' => $post->id]) }}">
+                            @csrf
+                            @method('DELETE')
+                            <input type="submit" value="Delete!" class="btn btn-primary"/>
+                        </form>
+                    @endcan
 
-                @can('restore', $post)
-                    <form method="POST" class="d-inline" action=" {{ route('posts.restore', ['id' => $post->id ]) }} ">
-                        @csrf
-                        <input type="submit" value="Restore" class="btn btn-primary"/>
-                    </form>
-                @endcan
+                    @can('restore', $post)
+                        <form method="POST" class="d-inline" action=" {{ route('posts.restore', ['id' => $post->id ]) }} ">
+                            @csrf
+                            <input type="submit" value="Restore" class="btn btn-primary"/>
+                        </form>
+                    @endcan
+            @endauth    
+                
                 
                 
             </div>
