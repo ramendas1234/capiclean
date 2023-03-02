@@ -40,15 +40,15 @@ class PostsController extends Controller
         // multiple local scope
         // BlogPost::ramen()->richard()->withCount('comments')->get()
 
-        $mostCommentPosts = Cache::remember('mostCommentPosts', now()->addSeconds(60), function(){
+        $mostCommentPosts = Cache::remember('blog-post-commented', now()->addSeconds(60), function(){
             return BlogPost::mostComment()->take(5)->get() ;
         });
 
-        $mostActiveUsers = Cache::remember('mostActiveUsers', now()->addSeconds(60), function(){
+        $mostActiveUsers = Cache::remember('users-most-active', now()->addSeconds(60), function(){
             return User::mostActiveUser()->take(3)->get() ;
         });
 
-        $mostActiveLastMonth = Cache::remember('mostActiveLastMonth', now()->addSeconds(60), function(){
+        $mostActiveLastMonth = Cache::remember('users-most-active-last-month', now()->addSeconds(60), function(){
             return User::mostBlogPostsLastMonth()->take(3)->get() ;
         });
 
@@ -132,8 +132,11 @@ class PostsController extends Controller
         //     return $query->latest();
         // }])->findOrFail($id);
 
+       $post = Cache::remember("blog-post-{$id}", now()->addSeconds(60), function() use ($id){
+            return BlogPost::with('comments')->findOrFail($id);
+       });
 
-        $post = BlogPost::with('comments')->findOrFail($id);
+        //$post = BlogPost::with('comments')->findOrFail($id);
 
 
 
