@@ -8,6 +8,7 @@ use App\Scopes\LatestScope;
 use Illuminate\Http\Request;
 use App\Http\Requests\StorePost;
 use Illuminate\Support\Facades\Auth;
+use Illuminate\Support\Facades\Cache;
 use Illuminate\Support\Facades\Gate;
 
 class PostsController extends Controller
@@ -39,13 +40,25 @@ class PostsController extends Controller
         // multiple local scope
         // BlogPost::ramen()->richard()->withCount('comments')->get()
 
+        $mostCommentPosts = Cache::remember('mostCommentPosts', now()->addSeconds(60), function(){
+            return BlogPost::mostComment()->take(5)->get() ;
+        });
+
+        $mostActiveUsers = Cache::remember('mostActiveUsers', now()->addSeconds(60), function(){
+            return User::mostActiveUser()->take(3)->get() ;
+        });
+
+        $mostActiveLastMonth = Cache::remember('mostActiveLastMonth', now()->addSeconds(60), function(){
+            return User::mostBlogPostsLastMonth()->take(3)->get() ;
+        });
+
         return view(
             'posts.index',
             [
                 'posts'=>BlogPost::ramen()->withCount('comments')->with('user')->get(),
-                'mostCommentPosts' => BlogPost::mostComment()->take(5)->get(),
-                'mostActiveUsers' => User::mostActiveUser()->take(3)->get(),
-                'mostActiveLastMonth' => User::mostBlogPostsLastMonth()->take(3)->get()
+                'mostCommentPosts' => $mostCommentPosts,
+                'mostActiveUsers' => $mostActiveUsers,
+                'mostActiveLastMonth' => $mostActiveLastMonth
             ]
         );
 
