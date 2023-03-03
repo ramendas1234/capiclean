@@ -6,6 +6,7 @@ use App\Models\User;
 use App\Models\Comment;
 use App\Models\BlogPost;
 use Illuminate\Database\Seeder;
+use Illuminate\Support\Facades\Cache;
 
 class DatabaseSeeder extends Seeder
 {
@@ -18,9 +19,10 @@ class DatabaseSeeder extends Seeder
     {
         // \App\Models\User::factory(10)->create();
 
+        Cache::tags(['blog-post'])->flush();
         //User::factory(10)->create();
         $this->call([
-            UsersTableSeeder::class,
+            //UsersTableSeeder::class,
             BlogPostsTableSeeder::class,
             CommentsTableSeeder::class
         ]);

@@ -19,7 +19,7 @@
 <x-badge show="{{ now()->diffInMinutes($post->created_at) < 25 }}" type="primary" message="New!"/>
 
 
-
+<h4>Comments</h4>
 @forelse ($post->comments as $comment)
     <div class="list-group mb-3">
         <a href="javascript:void(0);" class="list-group-item list-group-item-action flex-column align-items-start active">
