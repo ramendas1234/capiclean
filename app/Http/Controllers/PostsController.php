@@ -85,6 +85,7 @@ class PostsController extends Controller
      */
     public function store(StorePost $request)
     {
+        
         //
         //$this->authorize(BlogPost::class);
         $validated = $request->validated();
