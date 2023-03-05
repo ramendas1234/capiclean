@@ -8,6 +8,7 @@ use App\Http\Controllers\UserController;
 use Illuminate\Support\Facades\Redirect;
 use App\Http\Controllers\HomeCrontroller;
 use App\Http\Controllers\PostsController;
+use App\Http\Controllers\PostTagController;
 use App\Http\Controllers\PostsCommentsCrontroller;
 
 /*
@@ -34,6 +35,7 @@ Route::resource('posts', PostsController::class);
 Route::resource('posts.comments', PostsCommentsCrontroller::class)->only(['store']);
 Route::post('posts/{id}/restore', [PostsController::class, 'restore'])->name('posts.restore');
 
+Route::get('posts/tag/{tag}', [PostTagController::class, 'index'])->name('posts.tags.index');
 
 /*
 Route::get('/posts/{id}', function ($id) {
