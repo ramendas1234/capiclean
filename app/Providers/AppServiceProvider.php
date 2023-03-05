@@ -4,6 +4,7 @@ namespace App\Providers;
 
 use App\View\Components\Alert;
 use App\View\Components\SidebarCard;
+use App\View\Components\Tag;
 use Illuminate\Support\Facades\Blade;
 use Illuminate\Support\ServiceProvider;
 
@@ -33,6 +34,7 @@ class AppServiceProvider extends ServiceProvider
         Blade::component('components.updated', 'updated');
 
         Blade::component('sidebarCard', SidebarCard::class);
+        Blade::component('tag', Tag::class);
         
     }
 }

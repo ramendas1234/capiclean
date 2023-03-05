@@ -15,6 +15,8 @@
     updated by
 </x-updated>
 
+<x-tag :tags="$post->tags"  />
+
 
 <x-badge show="{{ now()->diffInMinutes($post->created_at) < 25 }}" type="primary" message="New!"/>
 

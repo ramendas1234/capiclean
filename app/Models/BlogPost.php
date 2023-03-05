@@ -2,6 +2,7 @@
 
 namespace App\Models;
 
+use App\Models\User;
 use App\Models\Tag;
 use App\Models\Comment;
 use App\Scopes\LatestScope;
@@ -26,7 +27,7 @@ class BlogPost extends Model
 
     public function user()
     {
-        return $this->belongsTo(User::class)->withTimestamps();
+        return $this->belongsTo(User::class);
     }
 
     public function tags(){

@@ -27,6 +27,14 @@
                     by <strong> {{ $post->user->name }} </strong>
                 </p>
                 <p>{{ $post['content'] }}</p>
+
+                <?php
+                //echo var_dump($post->tags); exit();
+                //dd($post->tags);
+                $test_array = ['Rohit', 'Shamm', 'Dinu'];
+                ?>
+                <x-tag :tags="$post->tags"  />
+
                 @if ($post->comments_count)
                 <p>{{ $post->comments_count }} comments</p>
                 @else
@@ -80,9 +88,7 @@
                 
                 </div>
             </div> --}}
-<?php  
-$test_array = ['Rohit', 'Shamm', 'Dinu'];
-?>
+
            
             <x-sidebarCard title="Most Commented Post" :items="$mostCommentPosts" type="post" />
 

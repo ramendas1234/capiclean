@@ -56,7 +56,7 @@ class PostsController extends Controller
         return view(
             'posts.index',
             [
-                'posts'=>BlogPost::ramen()->withCount('comments')->with('user')->get(),
+                'posts'=>BlogPost::ramen()->withCount('comments')->with('user')->with('tags')->get(),
                 'mostCommentPosts' => $mostCommentPosts,
                 'mostActiveUsers' => $mostActiveUsers,
                 'mostActiveLastMonth' => $mostActiveLastMonth
@@ -135,7 +135,7 @@ class PostsController extends Controller
         // }])->findOrFail($id);
 
        $post = Cache::tags(['blog-post'])->remember("blog-post-{$id}", now()->addSeconds(600), function() use ($id){
-            return BlogPost::with('comments')->findOrFail($id);
+            return BlogPost::with('comments')->with('user')->with('tags')->findOrFail($id);
        });
 
         //$post = BlogPost::with('comments')->findOrFail($id);
