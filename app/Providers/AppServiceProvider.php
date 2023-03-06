@@ -2,6 +2,7 @@
 
 namespace App\Providers;
 
+use App\Http\ViewComposers\ActivityComposer;
 use App\View\Components\Alert;
 use App\View\Components\SidebarCard;
 use App\View\Components\Tag;
@@ -36,5 +37,6 @@ class AppServiceProvider extends ServiceProvider
         Blade::component('sidebarCard', SidebarCard::class);
         Blade::component('tag', Tag::class);
         
+        view()->composer(['posts.index','posts.single-post'], ActivityComposer::class);
     }
 }
