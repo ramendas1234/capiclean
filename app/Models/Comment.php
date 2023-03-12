@@ -2,6 +2,7 @@
 
 namespace App\Models;
 
+use App\Models\User;
 use App\Scopes\LatestScope;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\Builder;
@@ -16,6 +17,11 @@ class Comment extends Model
     public function blogPost()
     {
         return $this->belongsTo(BlogPost::class);
+    }
+
+    public function user()
+    {
+        return $this->belongsTo(User::class);
     }
 
     /*  This function is for local query scope */ 

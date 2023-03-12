@@ -30,7 +30,7 @@
                 <a href="javascript:void(0);" class="list-group-item list-group-item-action flex-column align-items-start active">
                     <div class="d-flex w-100 justify-content-between">
                         <p class="mb-2">{{ $comment->content }}</p>
-                        <x-updated date="{{ $comment->created_at->diffForHumans() }}" message="added by" />
+                        <x-updated date="{{ $comment->created_at->diffForHumans() }}" message="added by" name="{{ $comment->user->name }}" />
                     </div>
                 </a>
             </div>
