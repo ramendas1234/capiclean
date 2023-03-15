@@ -22,8 +22,8 @@ Forbidden
 @endslot
 @endcomponent --}}
 
-<x-alert />
-<x-alert.danger />
+{{-- <x-alert />
+<x-alert.danger /> --}}
 
 
 

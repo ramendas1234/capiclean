@@ -2,8 +2,9 @@
 
 namespace App\Models;
 
-use App\Models\User;
 use App\Models\Tag;
+use App\Models\User;
+use App\Models\Image;
 use App\Models\Comment;
 use App\Scopes\LatestScope;
 use App\Scopes\DeletedAdminScope;
@@ -17,7 +18,7 @@ class BlogPost extends Model
 {
 
     use SoftDeletes;
-    protected $fillable = ['title', 'content'];
+    protected $fillable = ['title', 'content', 'user_id'];
     use HasFactory;
 
     public function comments()
@@ -34,11 +35,16 @@ class BlogPost extends Model
         return $this->belongsToMany(Tag::class)->withTimestamps();
     }
 
+    public function image()
+    {
+        return $this->hasOne(Image::class);
+    }
+
 
     /*  This function is for local query scope */ 
     public function scopeRamen(Builder $query)
     {
-        $query->orderBy(static::CREATED_AT, 'desc');
+        $query->withCount('comments')->with('user')->with('tags')->orderBy(static::CREATED_AT, 'desc');
     }
 
     public function scopeRichard(Builder $query)
@@ -63,10 +69,11 @@ class BlogPost extends Model
 
         static::deleting(function( BlogPost $blogPost ){
             $blogPost->comments()->delete();
+            Cache::tags(['blog-post'])->forget("blog-post-{$blogPost->id}");
         });
 
         static::updating(function( BlogPost $blogPost ){
-            Cache::forget("blog-post-{$blogPost->id}");
+            Cache::tags(['blog-post'])->forget("blog-post-{$blogPost->id}");
         });
 
         static::restoring(function( BlogPost $blogPost ){

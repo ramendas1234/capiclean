@@ -22,10 +22,7 @@ class PostTagController extends Controller
         return view(
             'posts.index',
             [
-                'posts'=> $tag->blogPosts,
-                'mostCommentPosts' => [],
-                'mostActiveUsers' => [],
-                'mostActiveLastMonth' => []
+                'posts'=> $tag->blogPosts()->ramen()->get(),
             ]
         );
 

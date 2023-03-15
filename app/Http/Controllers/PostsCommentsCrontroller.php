@@ -5,9 +5,17 @@ use App\Models\Comment;
 
 use App\Models\BlogPost;
 use Illuminate\Http\Request;
+use App\Http\Requests\StoreComment;
+use Illuminate\Support\Facades\Auth;
 
 class PostsCommentsCrontroller extends Controller
 {
+
+
+    public function __construct()
+    {
+        $this->middleware('auth')->only(['store']);
+    }
     /**
      * Display a listing of the resource.
      *
@@ -34,14 +42,23 @@ class PostsCommentsCrontroller extends Controller
      * @param  \Illuminate\Http\Request  $request
      * @return \Illuminate\Http\Response
      */
-    public function store(Request $request, $id)
+    public function store(StoreComment $request, $id)
     {
         //
+        
         $blog_post = BlogPost::findOrFail($id);
         $comment = new Comment();
         $comment->content = $request->get('blog_post_comment');
-        $comment->blogPost()->associate($blog_post)->save();
-        return redirect()->route('posts.show',['post'=>$id]);
+        $comment->blogPost()->associate($blog_post);
+        $comment->user()->associate(Auth::user());
+        $comment->save();
+
+
+        $request->session()->flash('status', 'Comment was created!');
+        
+        
+        //return redirect()->route('posts.show',['post'=>$id]);
+        return redirect()->back();
     }
 
     /**

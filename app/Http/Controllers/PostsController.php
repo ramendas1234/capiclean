@@ -7,6 +7,7 @@ use App\Models\BlogPost;
 use App\Scopes\LatestScope;
 use Illuminate\Http\Request;
 use App\Http\Requests\StorePost;
+use App\Models\Image;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Cache;
 use Illuminate\Support\Facades\Gate;
@@ -41,7 +42,7 @@ class PostsController extends Controller
         // multiple local scope
         // BlogPost::ramen()->richard()->withCount('comments')->get()
 
-        $mostCommentPosts = Cache::tags(['blog-post'])->remember('blog-post-commented', now()->addSeconds(600), function(){
+        /*$mostCommentPosts = Cache::tags(['blog-post'])->remember('blog-post-commented', now()->addSeconds(600), function(){
             return BlogPost::mostComment()->take(5)->get() ;
         });
 
@@ -51,15 +52,15 @@ class PostsController extends Controller
 
         $mostActiveLastMonth = Cache::remember('users-most-active-last-month', now()->addSeconds(600), function(){
             return User::mostBlogPostsLastMonth()->take(3)->get() ;
-        });
+        }); */
 
         return view(
             'posts.index',
             [
-                'posts'=>BlogPost::ramen()->withCount('comments')->with('user')->with('tags')->get(),
-                'mostCommentPosts' => $mostCommentPosts,
+                'posts'=>BlogPost::ramen()->get(),
+                /*'mostCommentPosts' => $mostCommentPosts,
                 'mostActiveUsers' => $mostActiveUsers,
-                'mostActiveLastMonth' => $mostActiveLastMonth
+                'mostActiveLastMonth' => $mostActiveLastMonth */
             ]
         );
 
@@ -101,12 +102,40 @@ class PostsController extends Controller
 
 
         /*  Way Two */
-        $post = BlogPost::make([
+        /*$post = BlogPost::make([
             'title'=>$validated['title'],
             'content'=>$validated['content'],
+            'user_id'=>Auth::id(),
         ]);
+        
         $user = User::find(Auth::id());
-        $user->blogPost()->save($post);
+        $user->blogPost()->save($post);*/
+
+        /* way three */
+
+        //$validated['user_id'] = $request->user()->id;
+        $post = BlogPost::create([
+            'title'=>$validated['title'],
+            'content'=>$validated['content'],
+            'user_id'=>Auth::id(),
+        ]);
+
+
+        if($request->hasFile('thumbnail'))
+        {
+            $path = $request->file('thumbnail')->store('thumbnails');
+            
+            /* way one */
+            /*$image = new Image();
+            $image->path = $path ;
+            $image->blogPost()->associate($post);
+            $image->save(); */
+
+            /* way two */
+            $image = Image::create(['path'=>$path]);
+            //$image = new Image(['path'=>$path]);
+            $post->image()->save($image);
+        }
 
 
         // $post = new BlogPost();
@@ -135,7 +164,14 @@ class PostsController extends Controller
         // }])->findOrFail($id);
 
        $post = Cache::tags(['blog-post'])->remember("blog-post-{$id}", now()->addSeconds(600), function() use ($id){
-            return BlogPost::with('comments')->with('user')->with('tags')->findOrFail($id);
+            /*return BlogPost::with('comments')
+            ->with('user')
+            ->with('tags')
+            ->with('comments.user')
+            ->findOrFail($id); */
+
+            return BlogPost::with('comments','user','tags','comments.user')
+            ->findOrFail($id);
        });
 
         //$post = BlogPost::with('comments')->findOrFail($id);
