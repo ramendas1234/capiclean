@@ -26,7 +26,8 @@ class StorePost extends FormRequest
         return [
             //
             'title'=> 'required|min:5',
-            'content'=> 'required|min:50'
+            'content'=> 'required|min:50',
+            'thumbnail' => 'image|mimes:jpg,jpeg,png,gif,svg|max:10024|dimensions:min_height=500'
         ];
     }
 }

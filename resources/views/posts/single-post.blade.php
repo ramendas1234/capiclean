@@ -5,11 +5,23 @@
 
 <div class="row">
     <div class="col-md-8">
-        <h1>{{ $post->title }}</h1>
+        @if($post->image)
+        <div style="background-image: url('{{ $post->image->url() }}');" class="banner-fixed">
+            <h1 style="padding-top: 100px; text-shadow: 1px 2px #000">
+        @else
+            <h1>
+        @endif
+            {{ $post->title }}
+            <x-badge show="{{ now()->diffInMinutes($post->created_at) < 25 }}" type="primary" message="New!"/>
+        @if($post->image)    
+            </h1>
+        </div>
+        @else
+            </h1>
+        @endif
+
         <p>{{ $post->content }}</p>
-        <img src="{{ $post->image->url() }}">
-
-
+        
         <x-updated date="{{ $post->created_at->diffForHumans() }}" name="{{ $post->user->name }}">
             added by
         </x-updated>    

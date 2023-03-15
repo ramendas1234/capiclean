@@ -11,7 +11,7 @@ use App\Models\Image;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Cache;
 use Illuminate\Support\Facades\Gate;
-
+use Illuminate\Support\Facades\Storage;
 
 class PostsController extends Controller
 {
@@ -226,6 +226,22 @@ class PostsController extends Controller
             'title'=>$validated['post_title'],
             'content'=>$validated['post_content']
         ]); */
+
+        if($request->hasFile('thumbnail'))
+        {
+            $path = $request->file('thumbnail')->store('thumbnails');
+            
+            if(isset($post->image->path)){
+                Storage::delete($post->image->path);
+                $post->image->path = $path;
+                $post->image->save();
+            }else{
+                $image = Image::create(['path'=>$path]);
+                $post->image()->save($image);
+            }
+            
+        }
+
         $post->save();
         $request->session()->flash('status','Post updated successfully');
         return redirect()->route('posts.show',['post'=>$post->id]);

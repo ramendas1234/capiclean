@@ -10936,3 +10936,10 @@ a.text-dark:focus {
   font-size: 1rem;
 }
 
+.banner-fixed {
+  min-height: 500px;
+  color: white;
+  text-align: center;
+  background-attachment: fixed;
+}
+
