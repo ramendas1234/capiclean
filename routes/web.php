@@ -36,6 +36,7 @@ Route::resource('posts.comments', PostsCommentsCrontroller::class)->only(['store
 Route::post('posts/{id}/restore', [PostsController::class, 'restore'])->name('posts.restore');
 
 Route::get('posts/tag/{tag}', [PostTagController::class, 'index'])->name('posts.tags.index');
+Route::resource('users', UserController::class)->only(['show', 'edit', 'update']);
 
 /*
 Route::get('/posts/{id}', function ($id) {

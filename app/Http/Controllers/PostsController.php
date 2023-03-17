@@ -132,7 +132,7 @@ class PostsController extends Controller
             $image->save(); */
 
             /* way two */
-            $image = Image::create(['path'=>$path]);
+            $image = Image::make(['path'=>$path]);
             //$image = new Image(['path'=>$path]);
             $post->image()->save($image);
         }
@@ -236,7 +236,7 @@ class PostsController extends Controller
                 $post->image->path = $path;
                 $post->image->save();
             }else{
-                $image = Image::create(['path'=>$path]);
+                $image = Image::make(['path'=>$path]);
                 $post->image()->save($image);
             }
             

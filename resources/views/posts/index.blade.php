@@ -22,10 +22,15 @@
                     @endif
                 </h3>
                 
-                <p class="text-muted">
+                {{-- <p class="text-muted">
                     Added {{ $post->created_at->diffForHumans() }}
                     by <strong> {{ $post->user->name }} </strong>
-                </p>
+                </p> --}}
+
+                <x-updated date="{{ $post->created_at->diffForHumans() }}" name="{{ $post->user->name }}" userId="{{ $post->user->id }}" >
+                    added by
+                </x-updated> 
+
                 <p>{{ $post['content'] }}</p>
 
                 <?php

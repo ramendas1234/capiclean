@@ -4,7 +4,7 @@ namespace App\Http\Requests;
 
 use Illuminate\Foundation\Http\FormRequest;
 
-class StorePost extends FormRequest
+class UpdateUser extends FormRequest
 {
     /**
      * Determine if the user is authorized to make this request.
@@ -25,9 +25,7 @@ class StorePost extends FormRequest
     {
         return [
             //
-            'title'=> 'required|min:5',
-            'content'=> 'required|min:50',
-            'thumbnail' => 'image|mimes:jpg,jpeg,png,gif,svg,webp|max:10024|dimensions:min_height=500'
+            'avatar' => 'image|mimes:jpg,jpeg,png,gif,svg'
         ];
     }
 }
