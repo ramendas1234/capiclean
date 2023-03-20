@@ -15,6 +15,10 @@ class AddPolymorphToCommentsTable extends Migration
     {
         Schema::table('comments', function (Blueprint $table) {
             //
+            $table->dropForeign('comments_blog_post_id_foreign');
+            $table->dropIndex('comments_blog_post_id_index');
+            $table->dropColumn('blog_post_id');
+            $table->morphs('commentable');
         });
     }
 
@@ -27,6 +31,10 @@ class AddPolymorphToCommentsTable extends Migration
     {
         Schema::table('comments', function (Blueprint $table) {
             //
+            $table->dropMorphs('commentable');
+
+            $table->unsignedBigInteger('blog_post_id')->index();
+            $table->foreign('blog_post_id')->references('id')->on('blog_posts');
         });
     }
 }

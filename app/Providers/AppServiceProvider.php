@@ -33,6 +33,8 @@ class AppServiceProvider extends ServiceProvider
         Blade::component('alert', Alert::class);
         Blade::component('components.badge', 'badge');
         Blade::component('components.updated', 'updated');
+        Blade::component('components.comment-form', 'commentForm');
+        Blade::component('components.comment-list', 'commentList');
 
         Blade::component('sidebarCard', SidebarCard::class);
         Blade::component('tag', Tag::class);

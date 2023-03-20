@@ -47,11 +47,15 @@ class PostsCommentsCrontroller extends Controller
         //
         
         $blog_post = BlogPost::findOrFail($id);
-        $comment = new Comment();
-        $comment->content = $request->get('blog_post_comment');
+        $blog_post->comments()->create([
+            'content'=> $request->input('content'),
+            'user_id' => $request->user()->id
+        ]);
+        /*$comment = new Comment();
+        $comment->content = $request->get('content');
         $comment->blogPost()->associate($blog_post);
         $comment->user()->associate(Auth::user());
-        $comment->save();
+        $comment->save();*/
 
 
         $request->session()->flash('status', 'Comment was created!');

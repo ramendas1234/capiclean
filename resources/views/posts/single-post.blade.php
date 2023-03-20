@@ -37,21 +37,10 @@
 
 
         <h4>Comments</h4>
-        @include('comments._form')  
-        @forelse ($post->comments as $comment)
-            <div class="list-group mb-3">
-                <a href="javascript:void(0);" class="list-group-item list-group-item-action flex-column align-items-start active">
-                    <div class="d-flex w-100 justify-content-between">
-                        <p class="mb-2">{{ $comment->content }}</p>
-                        <x-updated date="{{ $comment->created_at->diffForHumans() }}" message="added by" name="{{ $comment->user->name }}" />
-                    </div>
-                </a>
-            </div>
-        @empty
-            <div class="alert alert-danger">No comments on this post</div>
-        @endforelse
-            
-
+        {{-- @include('comments._form') --}}
+        <x-commentForm route="{{ route('posts.comments.store', ['post'=> $post->id] ) }}" />  
+        <x-commentList comments={{ $post->comments }} />
+       
         
     </div>
     <div class="col-md-4">

@@ -4,7 +4,7 @@
         @csrf
         <div class="form-group">
         <label for="exampleFormControlTextarea1">Comment on this post</label>
-        <textarea class="form-control" name="blog_post_comment" rows="3"></textarea>
+        <textarea class="form-control" name="content" rows="3"></textarea>
         </div>
         <div class="form-group">
             <button class="btn btn-primary btn-block" type="submit">Submit</button>

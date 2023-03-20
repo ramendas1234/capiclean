@@ -8,6 +8,7 @@ use Illuminate\Support\Facades\Cache;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\Builder;
 use Illuminate\Database\Eloquent\SoftDeletes;
+use Illuminate\Database\Eloquent\Relations\MorphTo;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 
 class Comment extends Model
@@ -16,14 +17,19 @@ class Comment extends Model
     use HasFactory;
     protected $fillable = ['user_id', 'content'];
 
-    public function blogPost()
+    /*public function blogPost()
     {
         return $this->belongsTo(BlogPost::class);
     }
-
+    */
     public function user()
     {
         return $this->belongsTo(User::class);
+    }
+
+    public function commentable(): MorphTo
+    {
+        return $this->morphTo();
     }
 
     /*  This function is for local query scope */ 
@@ -40,8 +46,11 @@ class Comment extends Model
         // static::addGlobalScope(new LatestScope);
 
         static::creating(function (Comment $comment) {
-            Cache::tags(['blog-post'])->forget("blog-post-{$comment->blog_post_id}");
-            Cache::tags(['blog-post'])->forget('blog-post-commented');
+
+            if ($comment->commentable_type === BlogPost::class) {
+                Cache::tags(['blog-post'])->forget("blog-post-{$comment->commentable_id}");
+                Cache::tags(['blog-post'])->forget('blog-post-commented');
+            }
         });
     
     }

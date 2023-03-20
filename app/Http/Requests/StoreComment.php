@@ -25,7 +25,7 @@ class StoreComment extends FormRequest
     {
         return [
             //
-            'blog_post_comment' => 'required|min:5'
+            'content' => 'required|min:5'
         ];
     }
 }
