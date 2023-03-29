@@ -2,7 +2,9 @@
 
 namespace App\Models;
 
+use App\Models\Tag;
 use App\Models\User;
+use App\Traits\Taggable;
 use App\Scopes\LatestScope;
 use Illuminate\Support\Facades\Cache;
 use Illuminate\Database\Eloquent\Model;
@@ -13,7 +15,7 @@ use Illuminate\Database\Eloquent\Factories\HasFactory;
 
 class Comment extends Model
 {
-    use SoftDeletes;
+    use SoftDeletes, Taggable;
     use HasFactory;
     protected $fillable = ['user_id', 'content'];
 
@@ -30,6 +32,10 @@ class Comment extends Model
     public function commentable(): MorphTo
     {
         return $this->morphTo();
+    }
+
+    public function tags(){
+        return $this->morphToMany(Tag::class, 'taggable')->withTimestamps();
     }
 
     /*  This function is for local query scope */ 

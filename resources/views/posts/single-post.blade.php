@@ -12,7 +12,6 @@
             <h1>
         @endif
             {{ $post->title }}
-            <x-badge show="{{ now()->diffInMinutes($post->created_at) < 25 }}" type="primary" message="New!"/>
         @if($post->image)    
             </h1>
         </div>
@@ -32,14 +31,21 @@
 
         <x-tag :tags="$post->tags"  />
 
-
-        <x-badge show="{{ now()->diffInMinutes($post->created_at) < 25 }}" type="primary" message="New!"/>
+        <div class="my-4">
+            <x-badge show="{{ now()->diffInMinutes($post->created_at) < 25 }}" type="primary" message="New!"/>
+        </div>
+        
 
 
         <h4>Comments</h4>
         {{-- @include('comments._form') --}}
+        <?php
+        $test_arr = ['ramen', 'joshep'];
+        //dd($post->comments);
+        $comments = $post->comments;
+        ?>
         <x-commentForm route="{{ route('posts.comments.store', ['post'=> $post->id] ) }}" />  
-        <x-commentList comments={{ $post->comments }} />
+        <x-commentList :comments="$comments" />
        
         
     </div>

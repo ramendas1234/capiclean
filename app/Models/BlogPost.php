@@ -8,6 +8,7 @@ use App\Models\Image;
 use App\Models\Comment;
 use App\Scopes\LatestScope;
 use App\Scopes\DeletedAdminScope;
+use App\Traits\Taggable;
 use Illuminate\Support\Facades\Cache;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\Builder;
@@ -18,7 +19,7 @@ use Illuminate\Database\Eloquent\Factories\HasFactory;
 class BlogPost extends Model
 {
 
-    use SoftDeletes;
+    use SoftDeletes, Taggable;
     protected $fillable = ['title', 'content', 'user_id'];
     use HasFactory;
 
@@ -33,7 +34,7 @@ class BlogPost extends Model
     }
 
     public function tags(){
-        return $this->belongsToMany(Tag::class)->withTimestamps();
+        return $this->morphToMany(Tag::class, 'taggable')->withTimestamps();
     }
 
     public function image()

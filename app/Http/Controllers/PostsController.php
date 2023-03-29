@@ -171,10 +171,10 @@ class PostsController extends Controller
             ->findOrFail($id); */
 
             return BlogPost::with('comments','user','tags','comments.user')
-            ->findOrFail($id);
+           ->findOrFail($id);
        });
 
-        //$post = BlogPost::with('comments')->findOrFail($id);
+        //$post = BlogPost::with('comments','user','tags','comments.user')->findOrFail($id);
        
 
         return view('posts.single-post',['post'=>$post]);

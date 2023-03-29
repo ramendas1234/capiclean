@@ -1,16 +1,18 @@
 <?php
 
+use App\Models\Comment;
 use Illuminate\Http\Request;
+use App\Mail\CommentPostedMarkdown;
+
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Route;
-
 use App\Http\Controllers\UserController;
 use Illuminate\Support\Facades\Redirect;
 use App\Http\Controllers\HomeCrontroller;
 use App\Http\Controllers\PostsController;
 use App\Http\Controllers\PostTagController;
-use App\Http\Controllers\PostsCommentsCrontroller;
 use App\Http\Controllers\UserCommentController;
+use App\Http\Controllers\PostsCommentsCrontroller;
 
 /*
 |--------------------------------------------------------------------------
@@ -39,6 +41,16 @@ Route::post('posts/{id}/restore', [PostsController::class, 'restore'])->name('po
 Route::get('posts/tag/{tag}', [PostTagController::class, 'index'])->name('posts.tags.index');
 Route::resource('users', UserController::class)->only(['show', 'edit', 'update']);
 Route::resource('users.comments', UserCommentController::class)->only(['store']);
+
+
+/*  Email preview url  */
+Route::get('mailable', function(){
+    $comment = Comment::find(1);
+    return  new CommentPostedMarkdown($comment);
+});
+
+
+
 /*
 Route::get('/posts/{id}', function ($id) {
 

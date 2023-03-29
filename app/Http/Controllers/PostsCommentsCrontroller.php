@@ -4,9 +4,13 @@ namespace App\Http\Controllers;
 use App\Models\Comment;
 
 use App\Models\BlogPost;
+use App\Mail\CommentPosted;
 use Illuminate\Http\Request;
 use App\Http\Requests\StoreComment;
+use App\Mail\CommentPostedMarkdown;
 use Illuminate\Support\Facades\Auth;
+use Illuminate\Support\Facades\Mail;
+use App\Jobs\NotifyUsersPostWasCommented;
 
 class PostsCommentsCrontroller extends Controller
 {
@@ -47,15 +51,33 @@ class PostsCommentsCrontroller extends Controller
         //
         
         $blog_post = BlogPost::findOrFail($id);
-        $blog_post->comments()->create([
+        $comment = $blog_post->comments()->create([
             'content'=> $request->input('content'),
             'user_id' => $request->user()->id
         ]);
+
+        /*  This is for immediately send without queue */
+        /*Mail::to($blog_post->user)->send(
+            new CommentPostedMarkdown($comment)
+        ); */
+
+        /*  Add queue and process job instant */
+        Mail::to($blog_post->user)->queue(
+            new CommentPostedMarkdown($comment)
+        );
+
+        NotifyUsersPostWasCommented::dispatch($comment);
+
+        // $when = now()->addMinutes(1);
+        // Mail::to($blog_post->user)->later($when , new CommentPostedMarkdown($comment) );
+
+
         /*$comment = new Comment();
         $comment->content = $request->get('content');
         $comment->blogPost()->associate($blog_post);
         $comment->user()->associate(Auth::user());
         $comment->save();*/
+        
 
 
         $request->session()->flash('status', 'Comment was created!');
