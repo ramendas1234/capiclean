@@ -8,7 +8,7 @@ use Illuminate\Contracts\Queue\ShouldQueue;
 use Illuminate\Mail\Mailable;
 use Illuminate\Queue\SerializesModels;
 
-class CommentPostedMarkdown extends Mailable implements ShouldQueue
+class CommentPostedMarkdown extends Mailable
 {
     use Queueable, SerializesModels;
     public $comment ;
@@ -33,13 +33,13 @@ class CommentPostedMarkdown extends Mailable implements ShouldQueue
         
         $subject = "New comment {$this->comment->commentable->title}";
         return $this->subject($subject)
-        ->attach(
-                storage_path('app/public') . '/'. $this->comment->user->image->path,
-                [
-                    'as' => 'user-profile-pic.png',
-                    'mime' => 'image/png'
-                ]
-            )
+        // ->attach(
+        //         storage_path('app/public') . '/'. $this->comment->user->image->path,
+        //         [
+        //             'as' => 'user-profile-pic.png',
+        //             'mime' => 'image/png'
+        //         ]
+        //     )
         ->markdown('mail.posts.commented-markdown');
     }
 }

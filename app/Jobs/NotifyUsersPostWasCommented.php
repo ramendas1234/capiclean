@@ -4,6 +4,7 @@ namespace App\Jobs;
 
 use App\Models\User;
 use App\Models\Comment;
+use App\Jobs\ThrottledMail;
 use Illuminate\Bus\Queueable;
 use Illuminate\Support\Facades\Mail;
 use App\Mail\NotifyAllCommenterOfPost;
@@ -45,9 +46,10 @@ class NotifyUsersPostWasCommented implements ShouldQueue
             return $user->id != $this->comment->user_id ;
         })
         ->map(function(User $user){
-            Mail::to($user)->send(
+            ThrottledMail::dispatch(new NotifyAllCommenterOfPost($this->comment, $user), $user);
+            /*Mail::to($user)->send(
                 new NotifyAllCommenterOfPost($this->comment, $user)
-            );
+            ); */
         });
 
     }

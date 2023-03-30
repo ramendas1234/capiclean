@@ -11,6 +11,7 @@ use App\Mail\CommentPostedMarkdown;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Mail;
 use App\Jobs\NotifyUsersPostWasCommented;
+use App\Jobs\ThrottledMail;
 
 class PostsCommentsCrontroller extends Controller
 {
@@ -62,9 +63,11 @@ class PostsCommentsCrontroller extends Controller
         ); */
 
         /*  Add queue and process job instant */
-        Mail::to($blog_post->user)->queue(
-            new CommentPostedMarkdown($comment)
-        );
+        // Mail::to($blog_post->user)->queue(
+        //     new CommentPostedMarkdown($comment)
+        // );
+
+        ThrottledMail::dispatch(new CommentPostedMarkdown($comment), $blog_post->user);
 
         NotifyUsersPostWasCommented::dispatch($comment);
 
