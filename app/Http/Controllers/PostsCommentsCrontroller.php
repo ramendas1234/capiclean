@@ -1,6 +1,8 @@
 <?php
 
 namespace App\Http\Controllers;
+
+use App\Events\CommentPosted as EventsCommentPosted;
 use App\Models\Comment;
 
 use App\Models\BlogPost;
@@ -67,9 +69,9 @@ class PostsCommentsCrontroller extends Controller
         //     new CommentPostedMarkdown($comment)
         // );
 
-        ThrottledMail::dispatch(new CommentPostedMarkdown($comment), $blog_post->user);
+        event(new EventsCommentPosted($comment));
 
-        NotifyUsersPostWasCommented::dispatch($comment);
+        
 
         // $when = now()->addMinutes(1);
         // Mail::to($blog_post->user)->later($when , new CommentPostedMarkdown($comment) );

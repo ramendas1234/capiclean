@@ -2,6 +2,7 @@
 
 namespace App\Http\Controllers;
 
+use App\Events\BlogPostPosted;
 use App\Models\User;
 use App\Models\BlogPost;
 use App\Scopes\LatestScope;
@@ -142,6 +143,8 @@ class PostsController extends Controller
         // $post->title = $validated['title'];
         // $post->content = $validated['content'];
         // $post->save();
+        event(new BlogPostPosted($post));
+
         $request->session()->flash('status','Post created successfully');
 
         return redirect()->route('posts.show',['post'=>$post->id]);

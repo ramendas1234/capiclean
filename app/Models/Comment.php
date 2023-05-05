@@ -51,13 +51,15 @@ class Comment extends Model
         // below line is for global scopes
         // static::addGlobalScope(new LatestScope);
 
+        /*
+        this code mentioned inside CommentObserver
         static::creating(function (Comment $comment) {
 
             if ($comment->commentable_type === BlogPost::class) {
                 Cache::tags(['blog-post'])->forget("blog-post-{$comment->commentable_id}");
                 Cache::tags(['blog-post'])->forget('blog-post-commented');
             }
-        });
+        });  */
     
     }
 

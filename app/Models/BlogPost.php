@@ -69,7 +69,9 @@ class BlogPost extends Model
         // below line is global scopes
         //static::addGlobalScope(new LatestScope);
 
-        static::deleting(function( BlogPost $blogPost ){
+
+        /* below model events are implement inside blogpostObserverclass */
+       /* static::deleting(function( BlogPost $blogPost ){
             $blogPost->comments()->delete();
             Cache::tags(['blog-post'])->forget("blog-post-{$blogPost->id}");
         });
@@ -80,6 +82,6 @@ class BlogPost extends Model
 
         static::restoring(function( BlogPost $blogPost ){
             $blogPost->comments()->restore();
-        });
+        }); */
     }
 }

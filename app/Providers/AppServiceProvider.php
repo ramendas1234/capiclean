@@ -2,12 +2,16 @@
 
 namespace App\Providers;
 
-use App\Http\ViewComposers\ActivityComposer;
-use App\View\Components\Alert;
-use App\View\Components\SidebarCard;
+use App\Models\Comment;
+use App\Models\BlogPost;
 use App\View\Components\Tag;
+use App\View\Components\Alert;
+use App\Observers\CommentObserver;
+use App\Observers\BlogPostObserver;
+use App\View\Components\SidebarCard;
 use Illuminate\Support\Facades\Blade;
 use Illuminate\Support\ServiceProvider;
+use App\Http\ViewComposers\ActivityComposer;
 
 class AppServiceProvider extends ServiceProvider
 {
@@ -40,5 +44,8 @@ class AppServiceProvider extends ServiceProvider
         Blade::component('tag', Tag::class);
         
         view()->composer(['posts.index','posts.single-post'], ActivityComposer::class);
+        BlogPost::observe(BlogPostObserver::class);
+        BlogPost::observe(BlogPostObserver::class);
+        Comment::observe(CommentObserver::class);
     }
 }
