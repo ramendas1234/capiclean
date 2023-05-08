@@ -4,6 +4,7 @@ namespace App\Providers;
 
 use App\Events\CommentPosted;
 use App\Events\BlogPostPosted;
+use App\Listeners\CacheSubscriber;
 use Illuminate\Support\Facades\Event;
 use Illuminate\Auth\Events\Registered;
 use App\Listeners\NotifyUsersAboutComment;
@@ -30,6 +31,10 @@ class EventServiceProvider extends ServiceProvider
         ]
     ];
 
+    protected $subscribe = [
+        CacheSubscriber::class
+    ];
+
     /**
      * Register any events for your application.
      *
@@ -38,5 +43,6 @@ class EventServiceProvider extends ServiceProvider
     public function boot()
     {
         //
+        parent::boot();
     }
 }
