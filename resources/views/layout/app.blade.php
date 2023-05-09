@@ -4,46 +4,55 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <meta http-equiv="X-UA-Compatible" content="ie=edge">
+
+    <!-- Google Fonts -->
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=EB+Garamond:wght@400;500&family=Inter:wght@400;500&family=Playfair+Display:ital,wght@0,400;0,700;1,400;1,700&display=swap" rel="stylesheet">
+
     <link rel="stylesheet" href="{{ mix('css/app.css') }}">
+    <link href="/css/bootstrap-icons/bootstrap-icons.css" rel="stylesheet">
+    <!-- Vendor CSS Files -->
+    <link href="css/swiper/swiper-bundle.min.css" rel="stylesheet">
+    <link href="css/glightbox/css/glightbox.min.css" rel="stylesheet">
+    <link href="css/aos/aos.css" rel="stylesheet">
+    
+    <link rel="stylesheet" href="{{ mix('css/blog-style.css') }}">
     
     <title>@yield('title')</title>
     
 </head>
 <body>
 
-    <div class="d-flex flex-column flex-md-row align-items-center p-3 px-md-4 mb-3 bg-white border-bottom shadow-sm">
-        <h5 class="my-0 mr-md-auto font-weight-normal">Laravel Blog</h5>
-        <nav class="my-2 my-md-0 mr-md-3">
-            <a class="p-2 text-dark" href="{{ route('home') }}">Home</a>
-            <a class="p-2 text-dark" href="{{ route('contact') }}">Contact</a>
-            <a class="p-2 text-dark" href="{{ route('posts.index') }}">Blog Posts</a>
-            <a class="p-2 text-dark" href="{{ route('posts.create') }}">Add</a>
+    <!-- Page Preloder -->
+    {{-- <div id="preloder">
+        <div class="loader"></div>
+    </div> --}}
 
-            @guest
-                @if (Route::has('register'))
-                    <a class="p-2 text-dark" href="{{ route('register') }}">Register</a>
-                @endif
-                    <a class="p-2 text-dark" href="{{ route('login') }}">Login</a>
-            @else
+    @include('layout.header')
 
-                <a class="p-2 text-dark" href="{{ route('logout') }}"
-                onclick="event.preventDefault();document.getElementById('logout-form').submit();"
-                >Logout ({{ Auth::user()->name }})</a>
+    
 
-                <form id="logout-form" action={{ route('logout') }} method="POST"
-                    style="display: none;">
-                    @csrf
-                </form>
-            @endguest
-        </nav>
-    </div>
-    <div class="container">
-        @if(session('status'))
-            <div class="alert alert-success">{{ session('status') }}</div>
-        @endif
-        @yield('content')
-    </div>
+    <main id="main">
+      
+          @if(session('status'))
+              <div class="alert alert-success">{{ session('status') }}</div>
+          @endif
+          @yield('content')
+      
+    </main>
+    
 
-    <script src="{{ mix('js/app.js') }}" defer></script>
+
+    @include('layout.footer')
+  <script src="{{ mix('js/app.js') }}" defer></script>
+  <!-- Vendor JS Files -->
+  <script src="css/swiper/swiper-bundle.min.js"></script>
+  <script src="css/glightbox/js/glightbox.min.js"></script>
+  <script src="css/aos/aos.js"></script>
+  <script src="css/php-email-form/validate.js"></script>
+
+  <!-- Template Main JS File -->
+  <script src="js/main.js"></script>
 </body>
 </html>
