@@ -25,9 +25,12 @@ use App\Http\Controllers\PostsCommentsCrontroller;
 |
 */
 
+
+
 Route::get('/', [HomeCrontroller::class,'index'])->name('home');
 
 Route::any('/contact', function (Request $request) {
+    //dd(resolve('cache.store'));
     return view('contact.contact');
 })->name('contact');
 
@@ -35,7 +38,7 @@ Route::get('/secret', [HomeCrontroller::class, 'secret'])->name('secret')->middl
 
 //Route::post('posts/comment', [PostsController::class,'create_comment']);
 Route::resource('posts', PostsController::class);
-Route::resource('posts.comments', PostsCommentsCrontroller::class)->only(['store']);
+Route::resource('posts.comments', PostsCommentsCrontroller::class)->only(['index','store']);
 Route::post('posts/{id}/restore', [PostsController::class, 'restore'])->name('posts.restore');
 
 Route::get('posts/tag/{tag}', [PostTagController::class, 'index'])->name('posts.tags.index');

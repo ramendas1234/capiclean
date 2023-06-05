@@ -2,6 +2,7 @@
 
 namespace App\Http\Controllers;
 
+use App\Models\BlogPost;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Redis;
 
@@ -13,7 +14,10 @@ class HomeCrontroller extends Controller
         //Redis::set('name', 'Taylor');
         
         //dd(Redis::get('name'));
-        return view('home.index',['user_details' => ['name'=>'Pritam Das','age'=>30,'address'=>'westbengal, 700048','meta_data'=>['contact'=>'655454335','fav_subject'=>['geography','bengali','Environment science'], 'fav_tv_show'=>['wwe','man vs wild']  ]]]);
+
+        $sliderPosts = BlogPost::whereIn('id', [11, 12, 56])->get();
+        $postGridSection = BlogPost::inRandomOrder()->limit(12)->get();
+        return view('home.index',['sliderPosts' => $sliderPosts, 'postGridSection' => $postGridSection]);
     }
 
     public function secret(){
